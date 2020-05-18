@@ -1,0 +1,6 @@
+.DS_Store
+lib/*
+.Trashes
+.fseventsd/*
+.metadata_never_index
+boot_out.txt
