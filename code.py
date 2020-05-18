@@ -1,5 +1,6 @@
 import time
 import board
+import json
 import busio
 import digitalio
 from adafruit_featherwing import minitft_featherwing
@@ -28,13 +29,24 @@ def scan():
   finally:
     trg.value = False
 
-for _ in range(2):
-  print('3 seconds...')
-  time.sleep(3)
-  print('scan...')
-  print('"{}"'.format(scan()))
-  
-buttons = wing.buttons
+with open("prix.json", "r") as lecture_fichier:
+    produits = json.load(lecture_fichier)
 
-while not buttons.a:
-  buttons = wing.buttons
+total=0
+
+while True:
+    buttons = wing.buttons
+
+    if buttons.a:
+        code_barre = scan()
+        if code_barre != None:
+            if code_barre in produits:
+                total +=  produits[code_barre]
+                print(total)
+            else:
+                # print(code_barre)
+                print(total)
+                time.sleep(5)
+                print("NOUVEAU CLIENT")
+                total=0
+        # else: pas de code barre, on retourne au début de la boucle
